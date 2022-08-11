@@ -1,30 +1,29 @@
 package com.ntg.organization.organization.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table
-public class Employee {
+public class Department {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @Column(length = 100, nullable = false)
     private String name;
 
-    private String email;
-
-
-    @ManyToOne
-    @JoinColumn(name = "dept_id")
-    private Department department;
+    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    private List<Employee> employees;
 }
+

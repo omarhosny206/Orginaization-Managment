@@ -1,30 +1,35 @@
 package com.ntg.organization.organization.controller;
 
+
+
 import com.ntg.organization.organization.entity.Employee;
 import com.ntg.organization.organization.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/emp/v1")
+@RequestMapping("/api/employees")
 public class EmployeeController {
-    @Autowired
-    private EmployeeService employeeService;
+    final EmployeeService employeeService;
 
-    @GetMapping(value = "/all")
-    public List<Employee> getAllEmployee() {
-        return employeeService.getAllEmployee();
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
-    @PostMapping(value = "/add")
-    public boolean createNewEmployee(@RequestBody Employee newEmp) {
-        return employeeService.createNewEmployee(newEmp);
+    @GetMapping(value = "/")
+    public List<Employee> getAll() {
+        return employeeService.getAll();
     }
 
-    @DeleteMapping(value = "/del/{empId}")
-    public boolean deleteEmployee(@PathVariable(value = "empId") Long id) {
-        return employeeService.deleteEmployeeById(id);
+
+    @PostMapping(value = "/")
+    public boolean save(@RequestBody Employee emp) {
+        return employeeService.save(emp);
+    }
+
+    @DeleteMapping("/id")
+    public boolean deleteById(@PathVariable long id) {
+        return employeeService.deleteById(id);
     }
 }

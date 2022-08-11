@@ -1,50 +1,39 @@
 package com.ntg.organization.organization.service;
 
+
 import com.ntg.organization.organization.entity.Employee;
+import com.ntg.organization.organization.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    static List<Employee> employees = null;
+    final EmployeeRepository employeeRepository;
 
-    static {
-        employees = new ArrayList<>();
-        employees.add(new Employee(1L, "Ahmed", "Ahmed@mail.com"));
-        employees.add(new Employee(2L, "Mohamed", "mohamed@mail.com"));
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    public List<Employee> getAllEmployee() {
-        return employees;
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
     }
 
-    public boolean createNewEmployee(Employee newEmp) {
+    public boolean save(Employee employee) {
 
-        if (newEmp != null) {
-            employees.add(newEmp);
+        if (employee != null) {
+            employeeRepository.save(employee);
             return true;
         }
 
         return false;
     }
 
-    public boolean deleteEmployeeById(Long id) {
-
-        if (id != null) {
-
-            for (Employee employee : employees) {
-
-                if (employee.getId().equals(id)) {
-                    employees.remove(employee);
-
-                    return true;
-                }
-            }
+    public boolean deleteById(long id) {
+        if (id != 0) {
+            employeeRepository.deleteById(id);
+            return true;
         }
-
         return false;
     }
-
 }
